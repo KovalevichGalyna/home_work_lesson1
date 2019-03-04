@@ -99,13 +99,11 @@ print_r( factorial_of_a($n) );
 <br>
 
 <?php 
-$x = rand(2,5);
-echo 'число', $x, '<br>';
 $arr = array ();
-for ($i = 1; $i <=$x ; $i += 0.5)
+for ($a = 1; $a <=5 ; $a += 0.5)
 {
 	
-	$y = (3 * $i) *(3 * $i) + $i - 4;
+	$y = (3 * $a) *(3 * $a) + $a - 4; // $y = pow((3*$a),2)+$a-4
 	echo "$y, ";
 	array_push($arr, $y);
 	
