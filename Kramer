@@ -1,0 +1,93 @@
+<?php
+if ($_POST) {
+    echo '<pre>';
+    echo htmlspecialchars(print_r($_POST, true));
+    echo '</pre>';
+}
+?>
+<form action="" method="post">
+    Первое уравнение:  <input type="text" name="x[x1]" />x1+<input type="text" name="y[y1]" />y1+<input type="text" name="z[z1]" />z1=<input type="text" name="a[a1]" /><br />
+    Второе уравнение: <input type="text" name="x[x2]" />x2+<input type="text" name="y[y2]" />y2+<input type="text" name="z[z2]" />z2=<input type="text" name="a[a2]" /><br />
+	Третье уравнение:  <input type="text" name="x[x3]" />x3+<input type="text" name="y[y3]" />y3+<input type="text" name="z[z3]" />z3=<input type="text" name="a[a3]" /><br />
+   
+    <input type="submit" value="Отправь меня!" />
+</form>
+
+<?php
+$x = $_POST['x'];
+$y = $_POST['y'];
+$z = $_POST['z'];
+$a = $_POST['a'];
+
+
+$per = ($x[x1]*$y[y2]*$z[z3])+($x[x2]*$z[z1]*$y[y3])+($y[y1]*$z[z2]*$x[x3])-($z[z1]*$y[y2]*$x[x3])-($y[y1]*$z[z3]*$x[x2])-($x[x1]*$y[y3]*$z[z2]);
+echo 'Определитель матрицы общей =',$per, '<br>';
+
+$perx = ($a[a1]*$y[y2]*$z[z3])+($a[a2]*$z[z1]*$y[y3])+($y[y1]*$z[z2]*$a[a3])-($z[z1]*$y[y2]*$a[a3])-($y[y1]*$z[z3]*$a[a2])-($a[a1]*$y[y3]*$z[z2]);
+echo 'Определитель матрицы x =',$perx, '<br>';
+
+$pery = ($x[x1]*$a[a2]*$z[z3])+($x[x2]*$z[z1]*$a[a3])+($a[a1]*$z[z2]*$x[x3])-($z[z1]*$a[a2]*$x[x3])-($a[a1]*$z[z3]*$x[x2])-($x[x1]*$a[a3]*$z[z2]);
+echo 'Определитель матрицы y =',$pery, '<br>';
+
+$perz = ($x[x1]*$y[y2]*$a[a3])+($x[x2]*$a[a1]*$y[y3])+($y[y1]*$a[a2]*$x[x3])-($a[a1]*$y[y2]*$x[x3])-($y[y1]*$a[a3]*$x[x2])-($x[x1]*$y[y3]*$a[a2]);
+echo 'Определитель матрицы z =', $perz, '<br>';
+
+$znachx = $perx / $per;
+echo 'Значение х=', $znachx, '<br>';
+
+$znachy = $pery / $per;
+echo 'Значение y=', $znachy, '<br>';
+
+$znachz = $perz / $per;
+echo 'Значение z=', $znachz, '<br>';
+?>
+<br>
+<br>
+<?php 
+  $matrix[0] = array($x[x1], $y[y1], $z[z1]);  
+  $matrix[1] = array($x[x2], $y[y2], $z[z2]);  
+  $matrix[2] = array($x[x3], $y[y3], $z[z3]); 
+  $b[0] = $a[a1]; 
+  $b[1] = $a[a2]; 
+  $b[2] = $a[a3]; 
+
+  list($x, $y, $z) = solve($matrix, $b); 
+  echo "Решение<br />"; 
+  echo "X = $x<br />"; 
+  echo "Y = $y<br />"; 
+  echo "Z = $z<br />"; 
+
+  echo 4 * $xx + 7 * $yy + 2 * $zz; 
+  echo "<br>"; 
+  echo 3 * $xx + 1 * $yy + 5 * $zz; 
+  echo "<br>"; 
+  echo 8 * $xx + 2 * $yy + 6 * $zz; 
+
+  function solve($matrix, $b) 
+  { 
+    
+    $determinant = determinant($matrix); 
+    
+    for($i = 0; $i < 3; $i++) 
+    { 
+      $xd[$i] = $matrix[$i]; 
+      $xd[$i][0] = $b[$i]; 
+      $yd[$i] = $matrix[$i]; 
+      $yd[$i][1] = $b[$i]; 
+      $zd[$i] = $matrix[$i]; 
+      $zd[$i][2] = $b[$i]; 
+    } 
+    $xx = determinant($xd) / $determinant; 
+    $yy = determinant($yd) / $determinant; 
+    $zz = determinant($zd) / $determinant; 
+
+    return array($xx, $yy, $zz); 
+  } 
+  
+  function determinant($m) 
+  { 
+    return $m[0][0] * ($m[1][1] * $m[2][2] - $m[2][1] * $m[1][2]) - 
+           $m[0][1] * ($m[1][0] * $m[2][2] - $m[2][0] * $m[1][2]) + 
+           $m[0][2] * ($m[1][0] * $m[2][1] - $m[2][0] * $m[1][1]); 
+  } 
+?>
